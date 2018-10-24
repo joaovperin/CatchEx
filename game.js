@@ -9,14 +9,16 @@ class Game {
     this.lastUpdateTimestamp = 0;
     this.lastRenderTimestamp = 0;
     this.gameObjects = [];
-    this.gameObjects.push(new GameObject());
+  }
+
+  addGameObject(gameObject) {
+    this.gameObjects.push(gameObject);
   }
 
   start() {
-    console.log('start');
+    window.dispatchEvent(new CustomEvent('gamestart'));
     window.requestAnimationFrame(() => this.updateLoop());
     window.requestAnimationFrame(() => this.renderLoop());
-    console.log('end');
   }
 
   updateLoop(timestamp) {
@@ -49,11 +51,11 @@ class Game {
 
 class GameObject {
 
-  constructor() {
-    this.px = 50;
-    this.py = 50;
-    this.sx = 50;
-    this.sy = 50;
+  constructor(px, py, sx, sy) {
+    this.px = px;
+    this.py = py;
+    this.sx = sx;
+    this.sy = sy;
     this.lineWidth = 4;
     this.strokeStyle = "green";
   }
@@ -71,3 +73,36 @@ class GameObject {
   }
 
 }
+
+class Player extends GameObject {
+
+  constructor() {
+    super(250, 250, 120, 120);
+  }
+
+}
+
+const pressedKeys = [];
+
+window.addEventListener('gamestart', () => {
+  console.log('Game Started!!');
+  game.addGameObject(new Player());
+});
+
+window.addEventListener('keydown', (k) => {
+  let keyCode = k.keyCode;
+  if (keyCode === 38) pressedKeys.push({ key: 'up' });
+  if (keyCode === 40) pressedKeys.push({ key: 'down' });
+  if (keyCode === 37) pressedKeys.push({ key: 'left' });
+  if (keyCode === 39) pressedKeys.push({ key: 'right' });
+  console.log('Press: ' + keyCode);
+});
+
+window.addEventListener('keyup', (k) => {
+  let keyCode = k.keyCode;
+  if (keyCode === 38) pressedKeys.push({ key: 'up' });
+  if (keyCode === 40) pressedKeys.push({ key: 'down' });
+  if (keyCode === 37) pressedKeys.push({ key: 'left' });
+  if (keyCode === 39) pressedKeys.push({ key: 'right' });
+  console.log('Release: ' + keyCode);
+});
