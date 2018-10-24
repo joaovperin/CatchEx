@@ -1,4 +1,6 @@
-window.addEventListener('load', function() {
+var game = null;
+
+window.addEventListener('load', function () {
   var content = document.querySelector('.content');
   var loadingSpinner = document.getElementById('loading');
   content.style.display = 'block';
@@ -22,12 +24,12 @@ window.addEventListener('load', function() {
   var loginBtn = document.getElementById('qsLoginBtn');
   var logoutBtn = document.getElementById('qsLogoutBtn');
 
-  homeViewBtn.addEventListener('click', function() {
+  homeViewBtn.addEventListener('click', function () {
     homeView.style.display = 'inline-block';
     loginView.style.display = 'none';
   });
 
-  loginBtn.addEventListener('click', function(e) {
+  loginBtn.addEventListener('click', function (e) {
     e.preventDefault();
     webAuth.authorize();
   });
@@ -60,7 +62,7 @@ window.addEventListener('load', function() {
   }
 
   function handleAuthentication() {
-    webAuth.parseHash(function(err, authResult) {
+    webAuth.parseHash(function (err, authResult) {
       if (authResult && authResult.accessToken && authResult.idToken) {
         window.location.hash = '';
         setSession(authResult);
@@ -81,13 +83,25 @@ window.addEventListener('load', function() {
     if (isAuthenticated()) {
       loginBtn.style.display = 'none';
       logoutBtn.style.display = 'inline-block';
-      loginStatus.innerHTML = 'You are logged in!';
+      loginStatus.innerHTML = '';
+      createCanvasAndStartGame();
     } else {
       loginBtn.style.display = 'inline-block';
       logoutBtn.style.display = 'none';
       loginStatus.innerHTML =
         'You are not logged in! Please log in to continue.';
     }
+  }
+
+  function createCanvasAndStartGame() {
+    var canvas = document.createElement('canvas');
+    canvas.id = 'canvas';
+    canvas.width = 500;
+    canvas.height = 500;
+    canvas.style = 'background-color: black';
+    homeView.appendChild(canvas);
+    game = new Game(canvas);
+    game.start();
   }
 
   handleAuthentication();

@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "serve -p 3000",
+    "start": "serve -l 3000",
+    "helpi": "serve --help",
     "test": "node test.js"
   },
   "author": "Auth0",
@@ -14,7 +15,7 @@
     "bootstrap": "^3.3.7"
   },
   "devDependencies": {
-    "serve": "^5.1.5",
+    "serve": "^7.0.0",
     "auth0-quickstarts-tester": "0.1.0"
   }
 }
